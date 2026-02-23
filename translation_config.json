@@ -1,0 +1,104 @@
+{
+  "translations": [
+    {
+      "keyword": "Wi-Fi station link down",
+      "translation": "Wi-Fi连接断开 - 设备与无线网络断开连接",
+      "category": "network"
+    },
+    {
+      "keyword": "CODE_WIFI_ON_DISCONNECT",
+      "translation": "Wi-Fi断开事件码 - 触发Wi-Fi断开回调事件",
+      "category": "event"
+    },
+    {
+      "keyword": "mbedtls_ssl_read returned",
+      "translation": "SSL/TLS读取错误 - TLS通信过程中发生错误",
+      "category": "security"
+    },
+    {
+      "keyword": "AP_LOSS",
+      "translation": "接入点丢失 - 检测到WiFi接入点信号丢失",
+      "category": "network"
+    },
+    {
+      "keyword": "miio_offline_hook_default called",
+      "translation": "离线钩子函数调用 - 设备进入离线状态时触发的处理函数",
+      "category": "system"
+    },
+    {
+      "keyword": "Got offline msg.",
+      "translation": "接收到离线消息 - 系统检测到设备处于离线状态",
+      "category": "system"
+    },
+    {
+      "keyword": "miio_online_hook_default called",
+      "translation": "上线钩子函数调用 - 设备从离线状态恢复在线时触发的处理函数",
+      "category": "system"
+    },
+    {
+      "keyword": "set powersave off",
+      "translation": "关闭电源节省模式 - 设备激活高功耗模式以提高性能",
+      "category": "power"
+    },
+    {
+      "keyword": "set powersave on",
+      "translation": "开启电源节省模式 - 设备进入低功耗模式以节省能源",
+      "category": "power"
+    },
+    {
+      "keyword": "pm_mode switch",
+      "translation": "电源管理模式切换 - 电源管理策略发生改变",
+      "category": "power"
+    },
+    {
+      "keyword": "enter powersave",
+      "translation": "进入省电模式 - 设备准备进入低功耗状态",
+      "category": "power"
+    },
+    {
+      "keyword": "exit powersave",
+      "translation": "退出省电模式 - 设备从低功耗状态唤醒",
+      "category": "power"
+    },
+    {
+      "keyword": "netMonitorTask",
+      "translation": "网络监控任务 - 负责监控网络连接状态的任务",
+      "category": "system"
+    },
+    {
+      "keyword": "Idle Task:",
+      "translation": "空闲任务 - 系统空闲时运行的低优先级任务",
+      "category": "system"
+    },
+    {
+      "keyword": "bl616_pmtickless",
+      "translation": "BL616电源管理节拍less模式 - BL616芯片的电源管理机制",
+      "category": "system"
+    },
+    {
+      "keyword": "miio_monitor",
+      "translation": "MIIO设备监控器 - 监控MIIO协议设备状态的组件",
+      "category": "system"
+    },
+    {
+      "keyword": "ota",
+      "translation": "固件空中下载(OTA) - 设备固件更新过程",
+      "category": "system"
+    },
+    {
+      "keyword": "token",
+      "translation": "认证令牌 - 用于身份验证的安全令牌",
+      "category": "security"
+    },
+    {
+      "keyword": "sync",
+      "translation": "同步操作 - 设备与服务器进行数据同步",
+      "category": "communication"
+    },
+    {
+      "keyword": "login",
+      "translation": "登录操作 - 设备向服务器验证身份",
+      "category": "communication"
+    }
+  ]
+}

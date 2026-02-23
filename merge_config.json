@@ -1,0 +1,14 @@
+{
+  "merges": [
+    {
+      "pattern": "\\[FILTERED: 跳过wapi_scan_stat行\\]",
+      "output": "\n[FILTERED: wapi_scan_stats搜索wifi过程略...]\n",
+      "description": "合并wapi_scan_stat过滤标记"
+    },
+    {
+      "pattern": "\\[FILTERED: 跳过bl616_wifi_sta_scan行\\]",
+      "output": "\n[FILTERED: 跳过bl616_wifi_sta_scan搜索wifi过程略...]\n",
+      "description": "合并bl616_wifi_sta_scan过滤标记"
+    }
+  ]
+}

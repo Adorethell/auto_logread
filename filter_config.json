@@ -1,0 +1,14 @@
+{
+  "filters": [
+    {
+      "keyword": "wapi_scan_stat",
+      "skip_lines": 5,
+      "description": "跳过wapi_scan_stat行"
+    },
+    {
+      "keyword": "bl616_wifi_sta_scan",
+      "skip_lines": 5,
+      "description": "跳过bl616_wifi_sta_scan行"
+    }
+  ]
+}
