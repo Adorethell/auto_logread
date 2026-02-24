@@ -5,6 +5,7 @@
 ## 语言设置
 
 为了确保沟通顺畅，Claude 在此项目中将始终使用中文进行回答。
+当运行log_analysis的skill时，不编写任何python代码，只输出Claude的分析结果。
 
 ## 项目概述
 
