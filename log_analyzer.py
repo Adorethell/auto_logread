@@ -143,16 +143,26 @@ class ResultExporter:
             json.dump(summary_data, f, indent=2)
 
 
-def select_log_file(interactive=True) -> List[str]:
+def select_log_file(interactive=True, config=None) -> List[str]:
     """交互式或自动选择要分析的日志文件。"""
-    logs_dir = Path("logs")
+    # 从配置获取日志目录，如果配置未提供或无效，则使用默认值
+    if config and "input_file" in config:
+        input_path = Path(config["input_file"])
+        if input_path.is_dir():
+            # 如果是目录，使用该目录
+            logs_dir = input_path
+        else:
+            # 如果是文件，使用其父目录
+            logs_dir = input_path.parent
+    else:
+        logs_dir = Path("logs")
 
     if not logs_dir.exists():
         print(f"错误：日志目录'{logs_dir}'不存在。")
         return []
 
-    # 获取目录中的所有日志文件
-    log_files = [f for f in logs_dir.iterdir() if f.is_file() and f.suffix.lower() in ['.log', '.txt']]
+    # 获取目录中的所有日志文件（包括子目录）
+    log_files = list(logs_dir.rglob("*.log")) + list(logs_dir.rglob("*.txt"))
 
     if not log_files:
         print(f"在'{logs_dir}'目录中未找到日志文件。")
@@ -215,7 +225,7 @@ def main():
     interactive = sys.stdin.isatty() and sys.stdout.isatty()
 
     # 获取要分析的文件列表
-    files_to_analyze = select_log_file(interactive)
+    files_to_analyze = select_log_file(interactive, config)
 
     if not files_to_analyze:
         return

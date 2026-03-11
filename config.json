@@ -1,5 +1,5 @@
 {
-  "input_file": "logs/test.log",
+  "input_file": "logs",
   "output_dir": "anomalies",
   "search_keyword": "offline",
   "boundary_keyword": "kplv ack"
