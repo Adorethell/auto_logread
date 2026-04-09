@@ -6,12 +6,12 @@
 """
 
 import os
+import re
 import json
 import logging
 import sys
 from typing import List, Tuple, Optional
 from pathlib import Path
-from datetime import datetime
 
 
 class LogReader:
@@ -39,17 +39,28 @@ class LogReader:
 class AnomalyDetector:
     """用于检测日志数据中异常段的模块。"""
 
-    def __init__(self, log_lines: List[str]):
+    def __init__(self, log_lines: List[str], exclude_keywords: List[str] = None, exclude_patterns: List[str] = None):
         self.log_lines = log_lines
+        self.exclude_keywords = exclude_keywords or []
+        self.exclude_patterns = [re.compile(p) for p in (exclude_patterns or [])]
         self.offline_positions = []
         self.kplv_ack_positions = []
         self._index_positions()
+
+    def _is_excluded(self, line: str) -> bool:
+        """判断行是否命中排除规则。"""
+        if any(kw in line for kw in self.exclude_keywords):
+            return True
+        if any(p.search(line) for p in self.exclude_patterns):
+            return True
+        return False
 
     def _index_positions(self):
         """索引'offline'和'kplv ack'出现的位置。"""
         for idx, line in enumerate(self.log_lines):
             if 'offline' in line:
-                self.offline_positions.append(idx)
+                if not self._is_excluded(line):
+                    self.offline_positions.append(idx)
             if 'kplv ack' in line:
                 self.kplv_ack_positions.append(idx)
 
@@ -234,11 +245,21 @@ def main():
 
     # 处理每个选定的文件
     for input_file in files_to_analyze:
-        # 根据时间戳和日志文件名为本次分析创建子目录
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_filename = Path(input_file).stem
-        subfolder_name = f"{timestamp}_{log_filename}"
-        output_subdir = Path(output_dir) / subfolder_name
+        # 根据日志文件名为本次分析创建子目录
+        input_path = Path(input_file)
+        log_filename = input_path.stem
+        subfolder_name = log_filename
+
+        # 如果日志文件在子目录下（如 COM-XX），则在输出目录中保持该层级
+        parent_name = input_path.parent.name
+        logs_dir = Path(config.get("input_file", "logs"))
+        if not logs_dir.is_dir():
+            logs_dir = logs_dir.parent
+        # 父目录不是 logs 根目录时，说明文件在子文件夹（COM 口）下
+        if parent_name and parent_name != logs_dir.name and parent_name != str(logs_dir):
+            output_subdir = Path(output_dir) / parent_name / subfolder_name
+        else:
+            output_subdir = Path(output_dir) / subfolder_name
 
         print(f"\n开始对文件进行日志分析: {input_file}")
 
@@ -257,7 +278,9 @@ def main():
             print(f"成功从日志文件读取 {len(log_lines)} 行")
 
             # 检测异常
-            detector = AnomalyDetector(log_lines)
+            exclude_keywords = config.get("exclude_keywords", [])
+            exclude_patterns = config.get("exclude_patterns", [])
+            detector = AnomalyDetector(log_lines, exclude_keywords, exclude_patterns)
             segments = detector.find_segments()
             print(f"发现 {len(segments)} 个异常段")
 

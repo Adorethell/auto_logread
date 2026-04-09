@@ -78,29 +78,45 @@ def filter_anomaly_files(anomalies_dir="anomalies", output_dir="anomalies_filter
     output_path = Path(output_dir)
     output_path.mkdir(exist_ok=True)
 
-    # 遍历所有子目录
+    # 遍历所有子目录（支持 COM-XX/timestamp_name 两层结构）
     processed_files = 0
-    for subdir in anomalies_path.iterdir():
-        if subdir.is_dir():
-            # 为每个子目录创建对应的输出子目录
-            output_subdir = output_path / subdir.name
-            output_subdir.mkdir(exist_ok=True)
+    for entry in anomalies_path.iterdir():
+        if not entry.is_dir():
+            continue
 
-            # 处理该子目录中的所有.log文件
-            for log_file in subdir.glob("*.log"):
-                if log_file.name != "anomaly_summary.json":  # 排除摘要文件
-                    # 读取原始内容
+        # 判断是否为 COM 口层级目录（不含 anomaly_*.log 文件）
+        has_log_files = any(entry.glob("*.log"))
+        has_subdirs = any(e.is_dir() for e in entry.iterdir())
+
+        if has_subdirs and not has_log_files:
+            # 这是 COM-XX 层级，继续往下一层
+            com_dir = entry
+            for subdir in com_dir.iterdir():
+                if subdir.is_dir():
+                    output_subdir = output_path / com_dir.name / subdir.name
+                    output_subdir.mkdir(parents=True, exist_ok=True)
+                    for log_file in subdir.glob("*.log"):
+                        if log_file.name != "anomaly_summary.json":
+                            with open(log_file, 'r', encoding='utf-8') as f:
+                                original_content = f.read()
+                            filtered_content = apply_filters(original_content, filters)
+                            output_file = output_subdir / log_file.name
+                            with open(output_file, 'w', encoding='utf-8') as f:
+                                f.write(filtered_content)
+                            print(f"已处理: {log_file} -> {output_file}")
+                            processed_files += 1
+        else:
+            # 这是 timestamp_name 层级（直接在 anomalies/ 下）
+            output_subdir = output_path / entry.name
+            output_subdir.mkdir(exist_ok=True)
+            for log_file in entry.glob("*.log"):
+                if log_file.name != "anomaly_summary.json":
                     with open(log_file, 'r', encoding='utf-8') as f:
                         original_content = f.read()
-
-                    # 应用过滤规则
                     filtered_content = apply_filters(original_content, filters)
-
-                    # 保存过滤后的内容
                     output_file = output_subdir / log_file.name
                     with open(output_file, 'w', encoding='utf-8') as f:
                         f.write(filtered_content)
-
                     print(f"已处理: {log_file} -> {output_file}")
                     processed_files += 1
 

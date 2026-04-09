@@ -37,6 +37,10 @@
         <div class="stats">
             <div class="stat-box">
                 <div class="stat-number">2</div>
+                <div class="stat-label">设备端口数（COM口）</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">4</div>
                 <div class="stat-label">统计单元（测试批次）</div>
             </div>
             <div class="stat-box">
@@ -53,6 +57,7 @@
 
         <table>
             <tr>
+                <th>端口</th>
                 <th>日志文件名</th>
                 <th>异常数量</th>
                 <th>对应异常文件</th>
@@ -61,8 +66,9 @@
                 <th>产生时间</th>
             </tr>
             <tr class="summary-row">
-                <td rowspan="4">20260303_181027_test</td>
-                <td rowspan="4">4</td>
+                <td rowspan="4">COM-14</td>
+                <td rowspan="2">20260303_181027_test</td>
+                <td rowspan="2">2</td>
                 <td>anomaly_1587_2952.log</td>
                 <td><span class="error-tag">ERROR</span>设备与无线网络断开连接，系统检测到设备处于离线状态</td>
                 <td>Wi-Fi连接断开导致设备离线</td>
@@ -75,6 +81,8 @@
                 <td>04:29:02~04:34:54</td>
             </tr>
             <tr>
+                <td rowspan="2">20260303_181027_test copy</td>
+                <td rowspan="2">2</td>
                 <td>anomaly_4325_4893.log</td>
                 <td><span class="warn-tag">WARN</span>网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</td>
                 <td>网络信号弱(AP_LOSS)，多次重连失败</td>
@@ -87,8 +95,9 @@
                 <td>06:35:28~06:37:57</td>
             </tr>
             <tr class="summary-row">
-                <td rowspan="4">20260303_181027_test copy</td>
-                <td rowspan="4">4</td>
+                <td rowspan="4">COM-30</td>
+                <td rowspan="2">20260303_181027_test</td>
+                <td rowspan="2">2</td>
                 <td>anomaly_1587_2952.log</td>
                 <td><span class="error-tag">ERROR</span>设备与无线网络断开连接，系统检测到设备处于离线状态</td>
                 <td>Wi-Fi连接断开导致设备离线</td>
@@ -101,6 +110,8 @@
                 <td>04:29:02~04:34:54</td>
             </tr>
             <tr>
+                <td rowspan="2">20260303_181027_test copy</td>
+                <td rowspan="2">2</td>
                 <td>anomaly_4325_4893.log</td>
                 <td><span class="warn-tag">WARN</span>网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</td>
                 <td>网络信号弱(AP_LOSS)，多次重连失败</td>
@@ -116,7 +127,9 @@
 
         <h2>详细异常分析</h2>
 
-        <h3>20260303_181027_test (4 个异常文件)</h3>
+        <h3>COM-14</h3>
+
+        <h3>20260303_181027_test (2 个异常文件)</h3>
 
         <h4>anomaly_1587_2952.log</h4>
         <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
@@ -195,7 +208,7 @@
 此次异常持续时间约2.5分钟，重连过程包括多次失败尝试、WiFi扫描和重新连接。</div>
         <hr>
 
-        <h3>20260303_181027_test copy (4 个异常文件)</h3>
+        <h3>20260303_181027_test copy (2 个异常文件)</h3>
 
         <h4>anomaly_1587_2952.log</h4>
         <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
@@ -219,13 +232,39 @@
 建议增加网络状态检测和连接保活机制。</div>
         <hr>
 
+        <h3>COM-30</h3>
+
+        <h3>20260303_181027_test (2 个异常文件)</h3>
+
+        <h4>anomaly_1587_2952.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> Wi-Fi断开连接</p>
+        <p><strong>异常内容:</strong> 设备与无线网络断开连接，系统检测到设备处于离线状态</p>
+        <p><strong>产生原因:</strong> Wi-Fi连接断开导致设备离线</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与COM-14同批次文件异常特征一致，表明这是可复现的网络断开问题。
+建议检查AP设备或网络环境稳定性。</div>
+        <hr>
+
+        <h4>anomaly_3206_3373.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">04:29:02~04:34:54</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> TLS连接错误</p>
+        <p><strong>异常内容:</strong> TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</p>
+        <p><strong>产生原因:</strong> mbedtls_ssl_read返回-0x4c错误，NTP超时</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与COM-14同批次文件异常特征一致，表明TLS连接问题在多台设备上同时出现，可能与网络环境有关。
+建议增加网络状态检测和连接保活机制。</div>
+        <hr>
+
+        <h3>20260303_181027_test copy (2 个异常文件)</h3>
+
         <h4>anomaly_4325_4893.log</h4>
         <p><strong>时间范围:</strong> <span class="timestamp">05:29:02~05:34:54</span></p>
         <p><strong>异常类型:</strong> <span class="warn-tag">WARN</span> 网络信号弱</p>
         <p><strong>异常内容:</strong> 网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</p>
         <p><strong>产生原因:</strong> 网络信号弱(AP_LOSS)，多次重连失败</p>
         <div class="anomaly-details"><strong>详细信息:</strong>
-与第一个测试批次的同名文件异常特征一致，表明该时间段网络环境持续不稳定。
+与COM-14同批次文件异常特征一致，表明该时间段网络环境持续不稳定。
 建议优化Wi-Fi天线设计或增加信号增强措施。</div>
         <hr>
 
@@ -235,8 +274,7 @@
         <p><strong>异常内容:</strong> 网络监控任务检测到网络连接问题，出现多次重连尝试</p>
         <p><strong>产生原因:</strong> Wi-Fi连接断开，重连失败，扫描WiFi后恢复连接</p>
         <div class="anomaly-details"><strong>详细信息:</strong>
-与第一个测试批次的同名文件异常特征一致，表明重连机制存在可复现的问题。
-从日志分析来看，重连失败的原因可能是通道切换不当或AP响应问题。
+与COM-14同批次文件异常特征一致，表明重连机制存在可复现的问题。
 建议优化重连逻辑，减少重连延迟。</div>
         <hr>
 
