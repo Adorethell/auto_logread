@@ -2,11 +2,11 @@
 
 ## 项目概述
 
-这是一个专门针对嵌入式模块日志文件进行分析的自动化工具，主要用于识别和提取包含"offline"关键字的异常段落。系统能够根据配置灵活地定义边界关键字，并提供完整的日志分析、过滤和翻译功能。
+这是一个专门针对嵌入式模块日志文件进行分析的自动化工具，主要用于识别和提取包含"miio_offline_hook_default"关键字的异常段落。系统能够根据配置灵活地定义搜索关键字和边界关键字，并提供完整的日志分析、过滤和翻译功能。
 
 ## 功能特性
 
-- **异常段落识别**：从日志文件中识别包含"offline"关键字的异常段落
+- **异常段落识别**：从日志文件中识别包含"miio_offline_hook_default"关键字的异常段落
 - **智能边界检测**：以"**kplv ack**"作为异常段落的上下边界
 - **批量文件处理**：支持单个文件、多文件或全部文件的选择性处理
 - **自动化分析流程**：提供一键式自动化处理脚本
@@ -41,7 +41,7 @@ auto_logread_v2/
 
 ### 1. log_analyzer.py (主分析器)
 - **LogReader类**：高效读取大日志文件，支持多种编码格式
-- **AnomalyDetector类**：检测包含"offline"关键字的异常段，以"kplv ack"为边界
+- **AnomalyDetector类**：检测包含配置搜索关键字（默认"miio_offline_hook_default"）的异常段，以"kplv ack"为边界
 - **ResultExporter类**：导出识别的异常段落到独立文件
 - 支持交互式选择日志文件，可选择单个、多个或全部文件处理
 - 结果保存在按时间戳命名的子目录中
@@ -73,7 +73,7 @@ auto_logread_v2/
 {
   "input_file": "logs/test.log",    // 输入日志文件路径
   "output_dir": "anomalies",        // 输出目录
-  "search_keyword": "offline",      // 搜索的关键字
+  "search_keyword": "miio_offline_hook_default",  // 搜索的关键字
   "boundary_keyword": "kplv ack"    // 边界关键字
 }
 ```

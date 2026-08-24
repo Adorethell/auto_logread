@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 日志异常提取程序
-从嵌入式模块日志中提取包含'offline'关键字的段落，
-以'kplv ack'标记作为边界。
+根据config.json中配置的搜索关键字（默认'miio_offline_hook_default'）
+从嵌入式模块日志中提取异常段落，以'kplv ack'标记作为边界。
 """
 
 import os
@@ -56,7 +56,7 @@ class AnomalyDetector:
         return False
 
     def _index_positions(self):
-        """索引'offline'和'kplv ack'出现的位置。"""
+        """索引搜索关键字和'kplv ack'出现的位置。"""
         for idx, line in enumerate(self.log_lines):
             if 'offline' in line:
                 if not self._is_excluded(line):
@@ -65,21 +65,21 @@ class AnomalyDetector:
                 self.kplv_ack_positions.append(idx)
 
     def find_segments(self) -> List[Tuple[int, int]]:
-        """查找包含'offline'且以'kplv ack'为边界的段落。"""
+        """查找包含搜索关键字且以'kplv ack'为边界的段落。"""
         segments = []
 
-        for offline_pos in self.offline_positions:
+        for keyword_pos in self.keyword_positions:
             # 查找之前的'kplv ack'位置
             start_pos = None
             for kplv_pos in reversed(self.kplv_ack_positions):
-                if kplv_pos < offline_pos:
+                if kplv_pos < keyword_pos:
                     start_pos = kplv_pos
                     break
 
             # 查找下一个'kplv ack'位置
             end_pos = None
             for kplv_pos in self.kplv_ack_positions:
-                if kplv_pos > offline_pos:
+                if kplv_pos > keyword_pos:
                     end_pos = kplv_pos
                     break
 
@@ -87,10 +87,10 @@ class AnomalyDetector:
             if start_pos is not None and end_pos is not None:
                 segments.append((start_pos, end_pos))
             elif start_pos is not None and end_pos is None:
-                # 处理offline后没有kplv ack的情况
+                # 处理关键字匹配行后没有kplv ack的情况
                 segments.append((start_pos, len(self.log_lines)-1))
             elif start_pos is None and end_pos is not None:
-                # 处理offline前没有kplv ack的情况
+                # 处理关键字匹配行前没有kplv ack的情况
                 segments.append((0, end_pos))
 
         # 去除重复项同时保持顺序
@@ -227,7 +227,7 @@ def main():
         config = {
             "input_file": "logs/test.log",
             "output_dir": "anomalies",
-            "search_keyword": "offline",
+            "search_keyword": "miio_offline_hook_default",
             "boundary_keyword": "kplv ack"
         }
 
