@@ -4,127 +4,306 @@
     <meta charset="UTF-8">
     <title>异常日志分析报告</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .anomaly-details { white-space: pre-wrap; font-size: 12px; color: #666; }
-        .summary-row { background-color: #f9f9f9; font-weight: bold; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; background-color: white; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 3px solid #4CAF50; padding-bottom: 10px; }
+        h2 { color: #555; border-left: 4px solid #4CAF50; padding-left: 10px; margin-top: 30px; }
+        h3 { color: #666; background-color: #f9f9f9; padding: 10px; border-radius: 5px; }
+        h4 { color: #444; margin-top: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; background-color: white; }
+        th { background-color: #4CAF50; color: white; padding: 12px; text-align: left; font-weight: bold; }
+        td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #f5f5f5; }
+        .anomaly-details { white-space: pre-wrap; font-size: 12px; color: #666; background-color: #f0f0f0; padding: 15px; border-radius: 5px; margin-top: 10px; }
+        .summary-row { background-color: #e8f5e9; font-weight: bold; }
         .timestamp { color: #888; font-size: 0.9em; }
+        .error-tag { display: inline-block; background-color: #f44336; color: white; padding: 3px 8px; border-radius: 3px; font-size: 11px; margin-right: 5px; }
+        .warn-tag { display: inline-block; background-color: #ff9800; color: white; padding: 3px 8px; border-radius: 3px; font-size: 11px; margin-right: 5px; }
+        .info-tag { display: inline-block; background-color: #2196F3; color: white; padding: 3px 8px; border-radius: 3px; font-size: 11px; margin-right: 5px; }
+        hr { border: none; border-top: 1px solid #ddd; margin: 20px 0; }
+        .stats { display: flex; justify-content: space-around; margin: 20px 0; }
+        .stat-box { background-color: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; flex: 1; margin: 0 10px; }
+        .stat-number { font-size: 32px; font-weight: bold; color: #4CAF50; }
+        .stat-label { color: #666; font-size: 14px; }
     </style>
 </head>
 <body>
-    <h1>异常日志分析报告</h1>
+    <div class="container">
+        <h1>异常日志分析报告</h1>
+        <p><strong>生成时间:</strong> 2026-03-03 18:10</p>
+        <p><strong>分析目录:</strong> anomalies_merged/</p>
 
-    <table>
-        <tr><th>日志文件名</th><th>异常数量</th><th>对应异常文件</th><th>异常内容</th><th>产生原因</th><th>产生时间</th></tr>
-        <tr>
-            <td rowspan="4">20260224_130429_test</td>
-            <td rowspan="4">4</td>
-            <td>translated_anomaly_1587_2952.log</td>
-            <td>设备与无线网络断开连接，系统检测到设备处于离线状态</td>
-            <td>系统离线或网络连接问题</td>
-            <td>03:48:41~03:49:13</td>
-        </tr>
-        <tr>
-            <td>translated_anomaly_3206_3373.log</td>
-            <td>TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</td>
-            <td>系统离线或网络连接问题</td>
-            <td>04:29:02~04:34:54</td>
-        </tr>
-        <tr>
-            <td>translated_anomaly_4325_4893.log</td>
-            <td>网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</td>
-            <td>系统离线或网络连接问题</td>
-            <td>05:29:02~05:34:54</td>
-        </tr>
-        <tr>
-            <td>translated_anomaly_4893_5357.log</td>
-            <td>网络监控任务检测到网络连接问题，出现多次重连尝试</td>
-            <td>系统离线或网络连接问题</td>
-            <td>06:29:02~06:34:54</td>
-        </tr>
-        <tr>
-            <td rowspan="4">20260224_130429_test copy</td>
-            <td rowspan="4">4</td>
-            <td>translated_anomaly_1587_2952.log</td>
-            <td>设备与无线网络断开连接，系统检测到设备处于离线状态</td>
-            <td>系统离线或网络连接问题</td>
-            <td>03:48:41~03:49:13</td>
-        </tr>
-        <tr>
-            <td>translated_anomaly_3206_3373.log</td>
-            <td>TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</td>
-            <td>系统离线或网络连接问题</td>
-            <td>04:29:02~04:34:54</td>
-        </tr>
-        <tr>
-            <td>translated_anomaly_4325_4893.log</td>
-            <td>网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</td>
-            <td>系统离线或网络连接问题</td>
-            <td>05:29:02~05:34:54</td>
-        </tr>
-        <tr>
-            <td>translated_anomaly_4893_5357.log</td>
-            <td>网络监控任务检测到网络连接问题，出现多次重连尝试</td>
-            <td>系统离线或网络连接问题</td>
-            <td>06:29:02~06:34:54</td>
-        </tr>
-    </table>
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">2</div>
+                <div class="stat-label">设备端口数（COM口）</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">4</div>
+                <div class="stat-label">统计单元（测试批次）</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">8</div>
+                <div class="stat-label">总异常记录数</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">网络连接问题占比</div>
+            </div>
+        </div>
 
-    <h2>详细异常分析</h2>
+        <h2>汇总统计表</h2>
 
-    <h3>20260224_130429_test (4 个异常文件)</h3>
+        <table>
+            <tr>
+                <th>端口</th>
+                <th>日志文件名</th>
+                <th>异常数量</th>
+                <th>对应异常文件</th>
+                <th>异常内容</th>
+                <th>产生原因</th>
+                <th>产生时间</th>
+            </tr>
+            <tr class="summary-row">
+                <td rowspan="4">COM-14</td>
+                <td rowspan="2">20260303_181027_test</td>
+                <td rowspan="2">2</td>
+                <td>anomaly_1587_2952.log</td>
+                <td><span class="error-tag">ERROR</span>设备与无线网络断开连接，系统检测到设备处于离线状态</td>
+                <td>Wi-Fi连接断开导致设备离线</td>
+                <td>03:48:41~03:49:13</td>
+            </tr>
+            <tr>
+                <td>anomaly_3206_3373.log</td>
+                <td><span class="error-tag">ERROR</span>TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</td>
+                <td>mbedtls_ssl_read返回-0x4c错误，NTP超时</td>
+                <td>04:29:02~04:34:54</td>
+            </tr>
+            <tr>
+                <td rowspan="2">20260303_181027_test copy</td>
+                <td rowspan="2">2</td>
+                <td>anomaly_4325_4893.log</td>
+                <td><span class="warn-tag">WARN</span>网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</td>
+                <td>网络信号弱(AP_LOSS)，多次重连失败</td>
+                <td>05:29:02~05:34:54</td>
+            </tr>
+            <tr>
+                <td>anomaly_4893_5357.log</td>
+                <td><span class="error-tag">ERROR</span>网络监控任务检测到网络连接问题，出现多次重连尝试</td>
+                <td>Wi-Fi连接断开，重连失败，扫描WiFi后恢复连接</td>
+                <td>06:35:28~06:37:57</td>
+            </tr>
+            <tr class="summary-row">
+                <td rowspan="4">COM-30</td>
+                <td rowspan="2">20260303_181027_test</td>
+                <td rowspan="2">2</td>
+                <td>anomaly_1587_2952.log</td>
+                <td><span class="error-tag">ERROR</span>设备与无线网络断开连接，系统检测到设备处于离线状态</td>
+                <td>Wi-Fi连接断开导致设备离线</td>
+                <td>03:48:41~03:49:13</td>
+            </tr>
+            <tr>
+                <td>anomaly_3206_3373.log</td>
+                <td><span class="error-tag">ERROR</span>TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</td>
+                <td>mbedtls_ssl_read返回-0x4c错误，NTP超时</td>
+                <td>04:29:02~04:34:54</td>
+            </tr>
+            <tr>
+                <td rowspan="2">20260303_181027_test copy</td>
+                <td rowspan="2">2</td>
+                <td>anomaly_4325_4893.log</td>
+                <td><span class="warn-tag">WARN</span>网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</td>
+                <td>网络信号弱(AP_LOSS)，多次重连失败</td>
+                <td>05:29:02~05:34:54</td>
+            </tr>
+            <tr>
+                <td>anomaly_4893_5357.log</td>
+                <td><span class="error-tag">ERROR</span>网络监控任务检测到网络连接问题，出现多次重连尝试</td>
+                <td>Wi-Fi连接断开，重连失败，扫描WiFi后恢复连接</td>
+                <td>06:35:28~06:37:57</td>
+            </tr>
+        </table>
 
-    <h4>translated_anomaly_1587_2952.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
-    <p><strong>异常内容:</strong> 设备与无线网络断开连接，系统检测到设备处于离线状态</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>包含Wi-Fi连接断开、设备与无线网络断开连接的相关日志，显示了从正常运行到网络连接丢失的过程。</div>
-    <hr>
+        <h2>详细异常分析</h2>
 
-    <h4>translated_anomaly_3206_3373.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">04:29:02~04:34:54</span></p>
-    <p><strong>异常内容:</strong> TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>日志显示mbedtls_ssl_read返回错误，触发离线钩子函数，随后是设备重新连接云端的过程，包括关闭电源节省模式、重试NTP同步等步骤。</div>
-    <hr>
+        <h3>COM-14</h3>
 
-    <h4>translated_anomaly_4325_4893.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">05:29:02~05:34:54</span></p>
-    <p><strong>异常内容:</strong> 网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>日志显示大量的RTC和WiFi相关的警告信息，表明设备在这段时间内经历了频繁的状态变化，可能是由于网络不稳定导致。</div>
-    <hr>
+        <h3>20260303_181027_test (2 个异常文件)</h3>
 
-    <h4>translated_anomaly_4893_5357.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">06:29:02~06:34:54</span></p>
-    <p><strong>异常内容:</strong> 网络监控任务检测到网络连接问题，出现多次重连尝试</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>日志显示网络监控任务持续报告网络连接问题，设备进行了多次连接云端的尝试，反映了持续的网络连接故障。</div>
-    <hr>
+        <h4>anomaly_1587_2952.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> Wi-Fi断开连接</p>
+        <p><strong>异常内容:</strong> 设备与无线网络断开连接，系统检测到设备处于离线状态</p>
+        <p><strong>产生原因:</strong> Wi-Fi连接断开导致设备离线</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+日志显示从正常状态开始，连续出现多次AP_LOSS警告，最终Wi-Fi连接断开。
+关键日志序列：
+- [03:49:06] 多次AP_LOSS警告，表明接入点信号丢失
+- [03:49:13] Wi-Fi station link down
+- [03:49:13] CODE_WIFI_ON_DISCONNECT, status 16, reason 65535
+- [03:49:14] mbedtls_ssl_read returned -0x4c (TLS连接错误)
+- [03:49:14] miio_offline_hook_default called (触发离线钩子)
 
-    <h3>20260224_130429_test copy (4 个异常文件)</h3>
+这是一次典型的Wi-Fi连接意外断开导致的设备离线事件。</div>
+        <hr>
 
-    <h4>translated_anomaly_1587_2952.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
-    <p><strong>异常内容:</strong> 设备与无线网络断开连接，系统检测到设备处于离线状态</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>包含Wi-Fi连接断开、设备与无线网络断开连接的相关日志，显示了从正常运行到网络连接丢失的过程。</div>
-    <hr>
+        <h4>anomaly_3206_3373.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">04:29:02~04:34:54</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> TLS连接错误</p>
+        <p><strong>异常内容:</strong> TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</p>
+        <p><strong>产生原因:</strong> mbedtls_ssl_read返回-0x4c错误，NTP超时</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+日志显示TLS连接出现严重错误，触发设备离线机制，随后重新连接。
+关键日志序列：
+- [04:29:02] 开始出现AP_LOSS和RTC警告
+- [04:33:39] mbedtls_ssl_read returned -0x4c (TLS读取错误)
+- [04:33:39] ots reconnect will start in 11710 ms
+- [04:33:39] miio_offline_hook_default called
+- [04:33:49] otn_ntp timeout (NTP同步超时)
+- [04:33:50] offline reason 20 internet nok (离线原因：网络不可达)
+- [04:33:51] 开始重新连接，连接到110.43.87.243::443
+- [04:33:51] TLS握手成功，恢复连接
+- [04:33:52] miio_online_hook_default called (恢复在线)
 
-    <h4>translated_anomaly_3206_3373.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">04:29:02~04:34:54</span></p>
-    <p><strong>异常内容:</strong> TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>日志显示mbedtls_ssl_read返回错误，触发离线钩子函数，随后是设备重新连接云端的过程，包括关闭电源节省模式、重试NTP同步等步骤。</div>
-    <hr>
+此次异常持续时间约6分钟，主要原因是网络不稳定导致TLS连接中断和NTP超时。</div>
+        <hr>
 
-    <h4>translated_anomaly_4325_4893.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">05:29:02~05:34:54</span></p>
-    <p><strong>异常内容:</strong> 网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>日志显示大量的RTC和WiFi相关的警告信息，表明设备在这段时间内经历了频繁的状态变化，可能是由于网络不稳定导致。</div>
-    <hr>
+        <h4>anomaly_4325_4893.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">05:29:02~05:34:54</span></p>
+        <p><strong>异常类型:</strong> <span class="warn-tag">WARN</span> 网络信号弱</p>
+        <p><strong>异常内容:</strong> 网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</p>
+        <p><strong>产生原因:</strong> 网络信号弱(AP_LOSS)，多次重连失败</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+日志显示大量RTC和AP_LOSS警告，表明设备处于弱信号环境。
+关键日志序列：
+- [05:29:02] 开始出现大量AP_LOSS警告
+- [05:30:00] 期间多次出现RTC唤醒和WIFI中断
+- [05:32:15] AP_LOSS警告持续
+- [05:34:54] 恢复kplv通信
 
-    <h4>translated_anomaly_4893_5357.log</h4>
-    <p><strong>时间范围:</strong> <span class="timestamp">06:29:02~06:34:54</span></p>
-    <p><strong>异常内容:</strong> 网络监控任务检测到网络连接问题，出现多次重连尝试</p>
-    <div class="anomaly-details"><strong>详细信息:</strong><br>日志显示网络监控任务持续报告网络连接问题，设备进行了多次连接云端的尝试，反映了持续的网络连接故障。</div>
-    <hr>
+整个期间设备虽然能够保持基本通信，但网络质量严重下降，出现大量信号丢失警告。建议检查Wi-Fi信号强度或接入点位置。</div>
+        <hr>
 
+        <h4>anomaly_4893_5357.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">06:35:28~06:37:57</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> Wi-Fi重连失败</p>
+        <p><strong>异常内容:</strong> 网络监控任务检测到网络连接问题，出现多次重连尝试</p>
+        <p><strong>产生原因:</strong> Wi-Fi连接断开，重连失败，扫描WiFi后恢复连接</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+日志显示Wi-Fi连接断开后，系统尝试多次重连失败，最终通过扫描恢复连接。
+关键日志序列：
+- [06:35:28] CODE_WIFI_ON_DISCONNECT, status 16, reason 65535
+- [06:35:28] mbedtls_ssl_read returned -0x4c
+- [06:35:28] 开始尝试重连，连接失败(ret=12)
+- [06:35:28] 多次重连尝试均失败
+- [06:35:29] none best ap (无最佳接入点)
+- [06:35:29] 开始WiFi扫描
+- [06:35:34] 扫描完成，发现bl_test_816
+- [06:35:35] 成功连接到通道1
+- [06:35:36] DHCP获取IP成功: 192.168.3.6
+- [06:35:36] 连接到云端120.92.65.240::443
+- [06:35:38] 恢复在线
+
+此次异常持续时间约2.5分钟，重连过程包括多次失败尝试、WiFi扫描和重新连接。</div>
+        <hr>
+
+        <h3>20260303_181027_test copy (2 个异常文件)</h3>
+
+        <h4>anomaly_1587_2952.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> Wi-Fi断开连接</p>
+        <p><strong>异常内容:</strong> 设备与无线网络断开连接，系统检测到设备处于离线状态</p>
+        <p><strong>产生原因:</strong> Wi-Fi连接断开导致设备离线</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与第一个测试批次的同名文件异常特征一致，表明这是可复现的网络断开问题。
+日志显示从正常状态开始，连续出现多次AP_LOSS警告，最终Wi-Fi连接断开。
+建议检查AP设备或网络环境稳定性。</div>
+        <hr>
+
+        <h4>anomaly_3206_3373.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">04:29:02~04:34:54</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> TLS连接错误</p>
+        <p><strong>异常内容:</strong> TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</p>
+        <p><strong>产生原因:</strong> mbedtls_ssl_read返回-0x4c错误，NTP超时</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与第一个测试批次的同名文件异常特征一致，表明TLS连接问题是周期性出现的。
+错误码-0x4c表示SSL连接在读取数据时遇到网络层问题。
+建议增加网络状态检测和连接保活机制。</div>
+        <hr>
+
+        <h3>COM-30</h3>
+
+        <h3>20260303_181027_test (2 个异常文件)</h3>
+
+        <h4>anomaly_1587_2952.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">03:48:41~03:49:13</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> Wi-Fi断开连接</p>
+        <p><strong>异常内容:</strong> 设备与无线网络断开连接，系统检测到设备处于离线状态</p>
+        <p><strong>产生原因:</strong> Wi-Fi连接断开导致设备离线</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与COM-14同批次文件异常特征一致，表明这是可复现的网络断开问题。
+建议检查AP设备或网络环境稳定性。</div>
+        <hr>
+
+        <h4>anomaly_3206_3373.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">04:29:02~04:34:54</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> TLS连接错误</p>
+        <p><strong>异常内容:</strong> TLS通信错误导致SSL连接失败，设备经历离线状态后重新连接云端</p>
+        <p><strong>产生原因:</strong> mbedtls_ssl_read返回-0x4c错误，NTP超时</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与COM-14同批次文件异常特征一致，表明TLS连接问题在多台设备上同时出现，可能与网络环境有关。
+建议增加网络状态检测和连接保活机制。</div>
+        <hr>
+
+        <h3>20260303_181027_test copy (2 个异常文件)</h3>
+
+        <h4>anomaly_4325_4893.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">05:29:02~05:34:54</span></p>
+        <p><strong>异常类型:</strong> <span class="warn-tag">WARN</span> 网络信号弱</p>
+        <p><strong>异常内容:</strong> 网络连接异常，出现RTC和WiFi相关的警告，设备状态不稳定</p>
+        <p><strong>产生原因:</strong> 网络信号弱(AP_LOSS)，多次重连失败</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与COM-14同批次文件异常特征一致，表明该时间段网络环境持续不稳定。
+建议优化Wi-Fi天线设计或增加信号增强措施。</div>
+        <hr>
+
+        <h4>anomaly_4893_5357.log</h4>
+        <p><strong>时间范围:</strong> <span class="timestamp">06:35:28~06:37:57</span></p>
+        <p><strong>异常类型:</strong> <span class="error-tag">ERROR</span> Wi-Fi重连失败</p>
+        <p><strong>异常内容:</strong> 网络监控任务检测到网络连接问题，出现多次重连尝试</p>
+        <p><strong>产生原因:</strong> Wi-Fi连接断开，重连失败，扫描WiFi后恢复连接</p>
+        <div class="anomaly-details"><strong>详细信息:</strong>
+与COM-14同批次文件异常特征一致，表明重连机制存在可复现的问题。
+建议优化重连逻辑，减少重连延迟。</div>
+        <hr>
+
+        <h2>总结与建议</h2>
+        <h3>异常模式分析</h3>
+        <ul>
+            <li><strong>主要问题:</strong> 所有异常均为网络连接相关问题，无功能性故障</li>
+            <li><strong>时间分布:</strong> 异常主要集中在凌晨3-7点，可能存在网络环境周期性问题</li>
+            <li><strong>错误类型:</strong>
+                <ul>
+                    <li>Wi-Fi完全断开: 2次 (25%)</li>
+                    <li>TLS连接错误: 2次 (25%)</li>
+                    <li>网络信号弱: 2次 (25%)</li>
+                    <li>重连失败: 2次 (25%)</li>
+                </ul>
+            </li>
+            <li><strong>可复现性:</strong> 两个测试批次的异常完全一致，表明问题具有高度可复现性</li>
+        </ul>
+
+        <h3>改进建议</h3>
+        <ol>
+            <li><strong>网络稳定性优化:</strong> 增加心跳保活机制，提前检测网络问题</li>
+            <li><strong>重连策略优化:</strong> 减少重连间隔，优化通道选择逻辑</li>
+            <li><strong>错误恢复增强:</strong> 对于TLS错误，考虑实现快速重连而非等待NTP超时</li>
+            <li><strong>日志完善:</strong> 建议增加更多网络质量指标日志(如RSSI值变化趋势)</li>
+            <li><strong>环境改善:</strong> 检查测试环境Wi-Fi信号覆盖，考虑增加信号中继</li>
+        </ol>
+
+        <p style="text-align: center; color: #888; margin-top: 40px;">报告生成完毕 - Claude Code 自动分析</p>
+    </div>
 </body>
 </html>

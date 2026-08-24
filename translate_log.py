@@ -74,9 +74,10 @@ def translate_keywords_in_log(log_file_path, config_file_path, output_dir):
 def translate_all_logs_in_merged():
     """遍历anomalies_merged下所有子文件夹，对其中的所有日志文件进行解释"""
 
-    merged_dir = "/home/qlwang/auto_logread_v2/anomalies_merged"
-    config_file_path = "/home/qlwang/auto_logread_v2/translation_config.json"
-    output_base_dir = "/home/qlwang/auto_logread_v2/anomalies_translated"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    merged_dir = os.path.join(base_dir, "anomalies_merged")
+    config_file_path = os.path.join(base_dir, "translation_config.json")
+    output_base_dir = os.path.join(base_dir, "anomalies_translated")
 
     # 遍历anomalies_merged下的所有子文件夹
     for subdir in os.listdir(merged_dir):
