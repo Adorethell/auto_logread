@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 日志异常提取程序
-从嵌入式模块日志中提取包含'offline'关键字的段落，
-以'kplv ack'标记作为边界。
+根据config.json中配置的搜索关键字（默认'miio_offline_hook_default'）
+从嵌入式模块日志中提取异常段落，以'kplv ack'标记作为边界。
 """
 
 import os
@@ -39,11 +39,12 @@ class LogReader:
 class AnomalyDetector:
     """用于检测日志数据中异常段的模块。"""
 
-    def __init__(self, log_lines: List[str], exclude_keywords: List[str] = None, exclude_patterns: List[str] = None):
+    def __init__(self, log_lines: List[str], search_keyword: str = 'offline', exclude_keywords: List[str] = None, exclude_patterns: List[str] = None):
         self.log_lines = log_lines
+        self.search_keyword = search_keyword
         self.exclude_keywords = exclude_keywords or []
         self.exclude_patterns = [re.compile(p) for p in (exclude_patterns or [])]
-        self.offline_positions = []
+        self.keyword_positions = []
         self.kplv_ack_positions = []
         self._index_positions()
 
@@ -56,30 +57,30 @@ class AnomalyDetector:
         return False
 
     def _index_positions(self):
-        """索引'offline'和'kplv ack'出现的位置。"""
+        """索引搜索关键字和'kplv ack'出现的位置。"""
         for idx, line in enumerate(self.log_lines):
-            if 'offline' in line:
+            if self.search_keyword in line:
                 if not self._is_excluded(line):
-                    self.offline_positions.append(idx)
+                    self.keyword_positions.append(idx)
             if 'kplv ack' in line:
                 self.kplv_ack_positions.append(idx)
 
     def find_segments(self) -> List[Tuple[int, int]]:
-        """查找包含'offline'且以'kplv ack'为边界的段落。"""
+        """查找包含搜索关键字且以'kplv ack'为边界的段落。"""
         segments = []
 
-        for offline_pos in self.offline_positions:
+        for keyword_pos in self.keyword_positions:
             # 查找之前的'kplv ack'位置
             start_pos = None
             for kplv_pos in reversed(self.kplv_ack_positions):
-                if kplv_pos < offline_pos:
+                if kplv_pos < keyword_pos:
                     start_pos = kplv_pos
                     break
 
             # 查找下一个'kplv ack'位置
             end_pos = None
             for kplv_pos in self.kplv_ack_positions:
-                if kplv_pos > offline_pos:
+                if kplv_pos > keyword_pos:
                     end_pos = kplv_pos
                     break
 
@@ -87,10 +88,10 @@ class AnomalyDetector:
             if start_pos is not None and end_pos is not None:
                 segments.append((start_pos, end_pos))
             elif start_pos is not None and end_pos is None:
-                # 处理offline后没有kplv ack的情况
+                # 处理关键字匹配行后没有kplv ack的情况
                 segments.append((start_pos, len(self.log_lines)-1))
             elif start_pos is None and end_pos is not None:
-                # 处理offline前没有kplv ack的情况
+                # 处理关键字匹配行前没有kplv ack的情况
                 segments.append((0, end_pos))
 
         # 去除重复项同时保持顺序
@@ -227,7 +228,7 @@ def main():
         config = {
             "input_file": "logs/test.log",
             "output_dir": "anomalies",
-            "search_keyword": "offline",
+            "search_keyword": "miio_offline_hook_default",
             "boundary_keyword": "kplv ack"
         }
 
@@ -278,9 +279,10 @@ def main():
             print(f"成功从日志文件读取 {len(log_lines)} 行")
 
             # 检测异常
+            search_keyword = config.get("search_keyword", "offline")
             exclude_keywords = config.get("exclude_keywords", [])
             exclude_patterns = config.get("exclude_patterns", [])
-            detector = AnomalyDetector(log_lines, exclude_keywords, exclude_patterns)
+            detector = AnomalyDetector(log_lines, search_keyword, exclude_keywords, exclude_patterns)
             segments = detector.find_segments()
             print(f"发现 {len(segments)} 个异常段")
 

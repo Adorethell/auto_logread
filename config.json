@@ -1,10 +1,8 @@
 {
   "input_file": "logs",
   "output_dir": "anomalies",
-  "search_keyword": "offline",
+  "search_keyword": "miio_offline_hook_default",
   "boundary_keyword": "kplv ack",
   "exclude_keywords": [],
-  "exclude_patterns": [
-    "sta offline \\d+ times in last"
-  ]
+  "exclude_patterns": []
 }
